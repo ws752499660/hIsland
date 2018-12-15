@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="club.quan9.hIsland.repository.CommentRepository">
+    <select id="getCommentsByTopicId" resultType="club.quan9.hIsland.domain.entity.Comment">
+        select comment.*,user.name as authorName
+        from comment,user
+        where comment.topicId = #{topicId} and comment.authorId=user.id
+        order by comment.date
+    </select>
+
+    <insert id="addComment" parameterType="club.quan9.hIsland.domain.entity.Comment">
+        insert into comment
+        values (#{id},#{topicId},#{authorId},#{content},#{date})
+    </insert>
+</mapper>

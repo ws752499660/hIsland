@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.quan9.hIsland.repository.TopicRepository">
+
+    <select id="getAllTopic" resultType="club.quan9.hIsland.domain.entity.Topic">
+        select topic.*,user.name as authorName from topic,user
+        where user.id=topic.authorId;
+    </select>
+
+    <insert id="addTopic" parameterType="club.quan9.hIsland.domain.entity.Topic">
+        insert into topic
+        values (#{id},#{title},#{authorId},#{date},#{content});
+    </insert>
+
+    <select id="getTopicById" resultType="club.quan9.hIsland.domain.entity.Topic">
+        select * from topic
+        where id=#{id};
+    </select>
+
+</mapper>
