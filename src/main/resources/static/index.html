@@ -65,13 +65,13 @@
 
         <h1>-----------------------------------</h1>
 
-        <h3>测试发帖功能</h3>
+        <h3>测试发主题功能</h3>
         <p>请求url：http://127.0.0.1:8080/addTopic
             请求方式：POST</p>
         <div v-for="(value,key) in topicForAdd" style="padding: 5px">
             {{key}}：   <input v-model="topicForAdd[key]">
         </div>
-        <button @click="addTopic">发帖</button>
+        <button @click="addTopic">发主题</button>
 
         <h1>-----------------------------------</h1>
 
@@ -83,10 +83,46 @@
         </div>
         <button @click="addComment">点击评论</button>
 
+        <h1>-----------------------------------</h1>
+
+        <h3>测试删除评论功能</h3>
+        <p>请求url：http://127.0.0.1:8080/delComment
+            请求方式：POST</p>
+        <div v-for="(value,key) in delCommentObj" style="padding: 5px">
+            {{key}}:  <input v-model="delCommentObj[key]">
+        </div>
+        <div v-if="delCommentFlag!=null">
+            <div v-if="delCommentFlag.flag == 'true'">删评论成功</div>
+            <div v-else>
+                删评论失败<br>
+                原因:  {{delCommentFlag.reason}}
+            </div>
+        </div>
+        <br>
+        <button @click="delComment">点击删除评论</button>
+
+        <h1>-----------------------------------</h1>
+
+        <h3>测试删除主题功能</h3>
+        <p>请求url：http://127.0.0.1:8080/delTopic
+            请求方式：POST</p>
+        <div v-for="(value,key) in delTopicObj" style="padding: 5px">
+            {{key}}:  <input v-model="delTopicObj[key]">
+        </div>
+        <div v-if="delTopicFlag!=null">
+            <div v-if="delTopicFlag.flag == 'true'">删主题成功</div>
+            <div v-else>
+                删主题失败<br>
+                原因:  {{delTopicFlag.reason}}
+            </div>
+        </div>
+        <br>
+        <button @click="delTopic">点击删除主题</button>
+
 
     </div>
 
-    <script src="http://127.0.0.1:8080/vue.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
     <script>
         var app=new Vue({
             el:'#app',
@@ -115,7 +151,19 @@
                     authorId:null,
                     topicId:null,
                     content:null
-                }
+                },
+
+                delCommentObj:{
+                    userId:"",
+                    commentId:""
+                },
+                delCommentFlag:null,
+
+                delTopicObj:{
+                    userId:"",
+                    topicId:""
+                },
+                delTopicFlag:null
             },
 
             methods:{
@@ -196,6 +244,30 @@
                     console.log("评论-发送数据：",text);
                     recive=JSON.parse(xhr.response);
                     console.log("评论-接受数据：",recive);
+                },
+                delComment:function () {
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/delComment";
+                    xhr.open("post",url,false);
+                    xhr.setRequestHeader("content-type","application/json");
+                    var text=JSON.stringify(this.delCommentObj);
+                    xhr.send(text);
+                    console.log("删评论-发送数据：",text);
+                    recive=JSON.parse(xhr.response);
+                    console.log("删评论-接受数据：",recive);
+                    this.delCommentFlag=recive;
+                },
+                delTopic:function () {
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/delTopic";
+                    xhr.open("post",url,false);
+                    xhr.setRequestHeader("content-type","application/json");
+                    var text=JSON.stringify(this.delTopicObj);
+                    xhr.send(text);
+                    console.log("删主题-发送数据：",text);
+                    recive=JSON.parse(xhr.response);
+                    console.log("删主题-接受数据：",recive);
+                    this.delTopicFlag=recive;
                 }
             }
         })

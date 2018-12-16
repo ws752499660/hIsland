@@ -10,4 +10,5 @@ public interface TopicRepository
     public List<Topic> getAllTopic();
     public void addTopic(Topic topic);
     public Topic getTopicById(String id);
+    public void delTopic(Topic topic);
 }

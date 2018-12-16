@@ -15,4 +15,14 @@
         insert into comment
         values (#{id},#{topicId},#{authorId},#{content},#{date})
     </insert>
+
+    <insert id="delComment" parameterType="club.quan9.hIsland.domain.entity.Comment">
+        delete from comment
+        where id=#{id};
+    </insert>
+
+    <select id="getCommentById" resultType="club.quan9.hIsland.domain.entity.Comment">
+        select * from comment
+        where id=#{id};
+    </select>
 </mapper>

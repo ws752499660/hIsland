@@ -8,6 +8,7 @@ import club.quan9.hIsland.service.CommentService;
 import club.quan9.hIsland.service.TopicService;
 import club.quan9.hIsland.service.UserService;
 import com.alibaba.fastjson.JSONObject;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,25 +57,14 @@ public class IndexController
     @ResponseBody
     public List<Comment> getCommentByTopicId(@RequestBody JSONObject receive)
     {
-        return commentService.getCommentsByTopicId(receive.getInteger("topicId"));
+        return commentService.getCommentsByTopicId(receive.getString("topicId"));
     }
 
     @RequestMapping(value = "/userRegister",method = RequestMethod.POST)
     @ResponseBody
     public String userRegister(@RequestBody JSONObject receive)
     {
-        User user=new User();
-        user.setId(UUID.randomUUID().toString().replace(" ","-"));
-        user.setName(receive.getString("name"));
-        user.setSex(receive.getString("sex").toCharArray()[0]);
-        user.setHobby(receive.getString("hobby"));
-        user.setPhone(receive.getLong("phone"));
-        user.setGroup(receive.getString("group"));
-        user.setStates(receive.getString("states"));
-        userService.register(user);
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("flag","true");
-        jsonObject.put("userId",user.getId());
+        JSONObject jsonObject=userService.register(receive);
         return jsonObject.toString();
     }
 
@@ -84,10 +74,7 @@ public class IndexController
     {
         User user=userService.getUserById(receive.getString("authorId"));
         Topic topic=topicService.initTopic(user,receive.getString("title"),receive.getString("content"));
-        topicService.addTopic(topic);
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("flag","true");
-        jsonObject.put("TopicId",topic.getId());
+        JSONObject jsonObject=topicService.addTopic(user,topic);
         return jsonObject.toJSONString();
     }
 
@@ -102,6 +89,26 @@ public class IndexController
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("flag","true");
         jsonObject.put("commentId",comment.getId());
+        return jsonObject.toString();
+    }
+
+    @RequestMapping(value = "/delComment",method = RequestMethod.POST)
+    @ResponseBody
+    public String delComment(@RequestBody JSONObject receive)
+    {
+        User user=userService.getUserById(receive.getString("userId"));
+        Comment comment=commentService.getCommentById(receive.getString("commentId"));
+        JSONObject jsonObject=commentService.delComment(user,comment);
+        return jsonObject.toString();
+    }
+
+    @RequestMapping(value = "/delTopic",method = RequestMethod.POST)
+    @ResponseBody
+    public String delTopic(@RequestBody JSONObject receive)
+    {
+        User user=userService.getUserById(receive.getString("userId"));
+        Topic topic=topicService.getTopicById(receive.getString("topicId"));
+        JSONObject jsonObject=topicService.delTopic(user,topic);
         return jsonObject.toString();
     }
 }

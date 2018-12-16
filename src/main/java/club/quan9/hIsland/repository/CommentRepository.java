@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface CommentRepository
 {
-    public List<Comment> getCommentsByTopicId(int topicId);
+    public List<Comment> getCommentsByTopicId(String topicId);
     public void addComment(Comment comment);
+    public void delComment(Comment comment);
+    public Comment getCommentById(String id);
 }
