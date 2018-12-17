@@ -6,7 +6,6 @@ import club.quan9.hIsland.domain.entity.User;
 import club.quan9.hIsland.repository.CommentRepository;
 import club.quan9.hIsland.service.CommentService;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,26 +17,17 @@ import java.util.UUID;
 public class CommentServiceImpl implements CommentService
 {
     @Autowired
-    SqlSession sqlSession;
-    private CommentRepository commentRepository;
-
-    private void getCommentRepository()
-    {
-        if(commentRepository==null)
-            this.commentRepository=sqlSession.getMapper(CommentRepository.class);
-    }
+    CommentRepository commentRepository;
 
     @Override
     public List<Comment> getCommentsByTopicId(String topicId)
     {
-        getCommentRepository();
         return commentRepository.getCommentsByTopicId(topicId);
     }
 
     @Override
     public void addComment(Comment comment)
     {
-        getCommentRepository();
         commentRepository.addComment(comment);
     }
 
@@ -57,29 +47,27 @@ public class CommentServiceImpl implements CommentService
     @Override
     public JSONObject delComment(User user, Comment comment)
     {
-        getCommentRepository();
         JSONObject jsonObject=new JSONObject();
         if(user.getGroup().equals("N"))
         {
             if(comment.getAuthorId().equals(user.getId()))
             {
                 commentRepository.delComment(comment);
-                jsonObject.put("flag","true");
+                jsonObject.put("flag",true);
                 jsonObject.put("reason","删除自己的评论");
                 return jsonObject;
             }
             else
             {
-                jsonObject.put("flag","false");
+                jsonObject.put("flag",false);
                 jsonObject.put("reason","普通用户不能删除别人的评论");
                 return jsonObject;
             }
         }
         else
         {
-            getCommentRepository();
             commentRepository.delComment(comment);
-            jsonObject.put("flag","true");
+            jsonObject.put("flag",true);
             jsonObject.put("reason","管理员删除评论");
             return jsonObject;
         }
@@ -88,7 +76,6 @@ public class CommentServiceImpl implements CommentService
     @Override
     public Comment getCommentById(String id)
     {
-        getCommentRepository();
         return commentRepository.getCommentById(id);
     }
 }

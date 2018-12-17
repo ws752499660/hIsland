@@ -3,12 +3,10 @@ package club.quan9.hIsland.web.controller;
 import club.quan9.hIsland.domain.entity.Comment;
 import club.quan9.hIsland.domain.entity.Topic;
 import club.quan9.hIsland.domain.entity.User;
-import club.quan9.hIsland.repository.test;
 import club.quan9.hIsland.service.CommentService;
 import club.quan9.hIsland.service.TopicService;
 import club.quan9.hIsland.service.UserService;
 import com.alibaba.fastjson.JSONObject;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,13 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 public class IndexController
 {
-    @Autowired
-    test test;
     @Autowired
     UserService userService;
     @Autowired
@@ -68,6 +63,15 @@ public class IndexController
         return jsonObject.toString();
     }
 
+    @RequestMapping(value = "/checkUserId",method = RequestMethod.POST)
+    @ResponseBody
+    public String checkUserId(@RequestBody JSONObject receive)
+    {
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("flag",userService.checkUserId(receive.getString("userId")));
+        return jsonObject.toString();
+    }
+
     @RequestMapping(value = "/addTopic",method = RequestMethod.POST)
     @ResponseBody
     public String addTopic(@RequestBody JSONObject receive)
@@ -109,6 +113,16 @@ public class IndexController
         User user=userService.getUserById(receive.getString("userId"));
         Topic topic=topicService.getTopicById(receive.getString("topicId"));
         JSONObject jsonObject=topicService.delTopic(user,topic);
+        return jsonObject.toString();
+    }
+
+    @RequestMapping(value = "/banUser",method = RequestMethod.POST)
+    @ResponseBody
+    public String banUser(@RequestBody JSONObject receive)
+    {
+        User optUser=userService.getUserById(receive.getString("optUserId"));
+        User tarUser=userService.getUserById(receive.getString("tarUserId"));
+        JSONObject jsonObject=userService.banUser(optUser,tarUser);
         return jsonObject.toString();
     }
 }

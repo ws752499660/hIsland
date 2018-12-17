@@ -5,7 +5,6 @@ import club.quan9.hIsland.domain.entity.User;
 import club.quan9.hIsland.repository.TopicRepository;
 import club.quan9.hIsland.service.TopicService;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,19 +16,11 @@ import java.util.UUID;
 public class TopicServiceImpl implements TopicService
 {
     @Autowired
-    SqlSession sqlSession;
-    private TopicRepository topicRepository;
-
-    private void getTopicRepository()
-    {
-        if(topicRepository == null)
-            this.topicRepository=sqlSession.getMapper(TopicRepository.class);
-    }
+    TopicRepository topicRepository;
 
     @Override
     public List<Topic> getAllTopic()
     {
-        getTopicRepository();
         return topicRepository.getAllTopic();
     }
 
@@ -39,14 +30,13 @@ public class TopicServiceImpl implements TopicService
         JSONObject jsonObject=new JSONObject();
         if(user.getStates().equals("N"))
         {
-            getTopicRepository();
             topicRepository.addTopic(topic);
-            jsonObject.put("flag","true");
-            jsonObject.put("reason","正常发帖");
+            jsonObject.put("flag",true);
+            jsonObject.put("topicId",topic.getId());
         }
         else
         {
-            jsonObject.put("flag","false");
+            jsonObject.put("flag",false);
             jsonObject.put("reason","用户被封禁");
         }
         return jsonObject;
@@ -68,7 +58,6 @@ public class TopicServiceImpl implements TopicService
     @Override
     public Topic getTopicById(String id)
     {
-        getTopicRepository();
         return topicRepository.getTopicById(id);
     }
 
@@ -76,25 +65,24 @@ public class TopicServiceImpl implements TopicService
     public JSONObject delTopic(User user, Topic topic)
     {
         JSONObject jsonObject=new JSONObject();
-        getTopicRepository();
         if(user.getGroup().equals("N"))
         {
             if(user.getId().equals(topic.getAuthorId()))
             {
                 topicRepository.delTopic(topic);
-                jsonObject.put("flag","true");
+                jsonObject.put("flag",true);
                 jsonObject.put("reason","删除自己的主题");
             }
             else
             {
-                jsonObject.put("flag","false");
+                jsonObject.put("flag",false);
                 jsonObject.put("reason","普通用户不能删除别人的主题");
             }
         }
         else
         {
             topicRepository.delTopic(topic);
-            jsonObject.put("flag","true");
+            jsonObject.put("flag",true);
             jsonObject.put("reason","管理员删除主题");
         }
         return jsonObject;

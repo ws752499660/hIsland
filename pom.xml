@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>hIsland</name>
-	<description>Demo project for Spring Boot</description>
+	<description>A information change platform for campus</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

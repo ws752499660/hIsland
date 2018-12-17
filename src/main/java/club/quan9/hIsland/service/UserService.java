@@ -8,4 +8,6 @@ public interface UserService
 {
     public User getUserById(String id);
     public JSONObject register(JSONObject receive);
+    public Boolean checkUserId(String id);
+    public JSONObject banUser(User optUser,User tarUser);
 }

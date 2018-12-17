@@ -16,10 +16,10 @@
     <h1>-----------------------------------</h1>
     <div id="app">
         <h3>用户ID api测试</h3>
-        请输入用户ID：
-        <input v-model="id">
         <p>请求url：http://127.0.0.1:8080/getName
             请求方式：post</p>
+        请输入用户ID：
+        <input v-model="id">
         <p>此ID用户的姓名是: {{ name }}</p>
         <button @click="getUserName">点击</button>
 
@@ -57,11 +57,22 @@
         <p>请求url：http://127.0.0.1:8080/userRegister
             请求方式：post</p>
         <div v-for="(value,key) in user" style="padding: 5px">
-            <div v-if="key!='id'">
             {{key}}:  <input v-model="user[key]">
-            </div>
         </div>
         <button @click="register">注册</button>
+
+        <h1>-----------------------------------</h1>
+
+        <h3>这是测试User的Id查重功能</h3>
+        <p>请求url：http://127.0.0.1:8080/checkUserId
+            请求方式：post</p>
+        请输入想注册的UserId:
+        <input v-model="userId.userId" style="padding: 5px">
+        <div v-if="checkUserIdFlag!=null">
+            <div v-if="checkUserIdFlag.flag">恭喜，该Id可用</div>
+            <div v-else>再重新想一个吧，有人已经注册过该Id了</div>
+        </div>
+        <button @click="checkUserId">点击查重</button>
 
         <h1>-----------------------------------</h1>
 
@@ -92,7 +103,7 @@
             {{key}}:  <input v-model="delCommentObj[key]">
         </div>
         <div v-if="delCommentFlag!=null">
-            <div v-if="delCommentFlag.flag == 'true'">删评论成功</div>
+            <div v-if="delCommentFlag.flag">删评论成功</div>
             <div v-else>
                 删评论失败<br>
                 原因:  {{delCommentFlag.reason}}
@@ -110,7 +121,7 @@
             {{key}}:  <input v-model="delTopicObj[key]">
         </div>
         <div v-if="delTopicFlag!=null">
-            <div v-if="delTopicFlag.flag == 'true'">删主题成功</div>
+            <div v-if="delTopicFlag.flag">删主题成功</div>
             <div v-else>
                 删主题失败<br>
                 原因:  {{delTopicFlag.reason}}
@@ -118,6 +129,24 @@
         </div>
         <br>
         <button @click="delTopic">点击删除主题</button>
+
+        <h1>-----------------------------------</h1>
+
+        <h3>测试封禁功能</h3>
+        <p>请求url：http://127.0.0.1:8080/banUser
+            请求方式：POST</p>
+        <div v-for="(value,key) in banUserObj" style="padding: 5px">
+            {{key}}:  <input v-model="banUserObj[key]">
+        </div>
+        <div v-if="banUserFlag!=null">
+            <div v-if="banUserFlag.flag">封禁成功</div>
+            <div v-else>
+                封禁失败
+                <br>
+                {{banUserFlag.reason}}
+            </div>
+        </div>
+        <button @click="banUser">点击封禁</button>
 
 
     </div>
@@ -142,6 +171,10 @@
                     group:'',
                     states:''
                 },
+
+                userId:{userId:''},
+                checkUserIdFlag:null,
+
                 topicForAdd:{
                     authorId:'',
                     title:'',
@@ -163,7 +196,13 @@
                     userId:"",
                     topicId:""
                 },
-                delTopicFlag:null
+                delTopicFlag:null,
+
+                banUserObj:{
+                    optUserId:'',
+                    tarUserId:''
+                },
+                banUserFlag:null
             },
 
             methods:{
@@ -223,6 +262,18 @@
                     recive=JSON.parse(xhr.response);
                     console.log("用户注册-接受数据：",recive);
                 },
+                checkUserId:function() {
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/checkUserId";
+                    xhr.open("post",url,false);
+                    xhr.setRequestHeader("content-type","application/json");
+                    var text=JSON.stringify(this.userId);
+                    xhr.send(text);
+                    console.log("用户ID查重-发送数据：",text);
+                    recive=JSON.parse(xhr.response);
+                    console.log("用户ID查重-接受数据：",recive);
+                    this.checkUserIdFlag=recive;
+                },
                 addTopic:function () {
                     var xhr=new XMLHttpRequest();
                     var url="http://127.0.0.1:8080/addTopic";
@@ -268,6 +319,18 @@
                     recive=JSON.parse(xhr.response);
                     console.log("删主题-接受数据：",recive);
                     this.delTopicFlag=recive;
+                },
+                banUser:function () {
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/banUser";
+                    xhr.open("post",url,false);
+                    xhr.setRequestHeader("content-type","application/json");
+                    var text=JSON.stringify(this.banUserObj);
+                    xhr.send(text);
+                    console.log("封禁用户-发送数据：",text);
+                    recive=JSON.parse(xhr.response);
+                    console.log("封禁用户-接受数据：",recive);
+                    this.banUserFlag=recive;
                 }
             }
         })
