@@ -3,12 +3,23 @@ package club.quan9.hIsland.domain.entity;
 public class User
 {
     private String id;
+    private String passwd;
     private String name;
     private char sex;   //m——男；f——女
     private String hobby;
     private long phone;
     private String group;
     private String states;
+
+    public String getPasswd()
+    {
+        return passwd;
+    }
+
+    public void setPasswd(String passwd)
+    {
+        this.passwd = passwd;
+    }
 
     public String getId()
     {

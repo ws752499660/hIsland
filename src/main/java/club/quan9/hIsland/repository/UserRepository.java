@@ -10,7 +10,7 @@ public interface UserRepository
     public User getUserById(String id);
 
     @Insert("insert into user " +
-            "values (#{id},#{name},#{sex},#{hobby},#{phone},#{group},#{states})")
+            "values (#{id},#{passwd},#{name},#{sex},#{hobby},#{phone},#{group},#{states})")
     public void addUser(User user);
 
     @Select("select id from user where id=#{id}")
@@ -18,4 +18,7 @@ public interface UserRepository
 
     @Update("update user set ${column}=#{value} where id=#{user.id}")
     public void updateColumnById(@Param("column")String column,@Param("value")String value,@Param("user")User user);
+
+    @Select("select passwd from user where id=#{id}")
+    public String getPasswdById(User user);
 }

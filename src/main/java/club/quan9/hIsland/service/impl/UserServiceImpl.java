@@ -7,6 +7,8 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class UserServiceImpl implements UserService
 {
@@ -68,6 +70,38 @@ public class UserServiceImpl implements UserService
             jsonObject.put("flag",false);
             jsonObject.put("reason","权限不够或其他错误");
         }
+        return jsonObject;
+    }
+
+    @Override
+    public JSONObject changeUserProfile(User originalUser, User tarUser)
+    {
+        boolean flag=true;
+        JSONObject jsonObject=new JSONObject();
+        JSONObject oUserJson=JSONObject.parseObject(JSONObject.toJSONString(originalUser));
+        JSONObject tUserJson=JSONObject.parseObject(JSONObject.toJSONString(tarUser));
+        for (Map.Entry<String, Object> entry : oUserJson.entrySet())
+        {
+            String key=entry.getKey();
+            if( (!(entry.getValue().toString().equals(tUserJson.getString(key)))) && (!key.equals("id")) )
+            {
+                userRepository.updateColumnById(key,tUserJson.getString(key),originalUser);
+            }
+        }
+        jsonObject.put("flag",flag);
+        return jsonObject;
+    }
+
+    @Override
+    public JSONObject login(JSONObject receive)
+    {
+        JSONObject jsonObject=new JSONObject();
+        String id=receive.getString("id");
+        String passwd=receive.getString("passwd");
+        if(userRepository.getPasswdById(getUserById(id)).equals(passwd))
+            jsonObject.put("flag",true);
+        else
+            jsonObject.put("flag",false);
         return jsonObject;
     }
 }

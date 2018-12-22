@@ -63,6 +63,14 @@ public class IndexController
         return jsonObject.toString();
     }
 
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @ResponseBody
+    public String login(@RequestBody JSONObject receive)
+    {
+        JSONObject jsonObject=userService.login(receive);
+        return jsonObject.toString();
+    }
+
     @RequestMapping(value = "/checkUserId",method = RequestMethod.POST)
     @ResponseBody
     public String checkUserId(@RequestBody JSONObject receive)
@@ -89,10 +97,7 @@ public class IndexController
         User user=userService.getUserById(receive.getString("authorId"));
         Topic topic=topicService.getTopicById(receive.getString("topicId"));
         Comment comment=commentService.initComment(topic,user,receive.getString("content"));
-        commentService.addComment(comment);
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("flag","true");
-        jsonObject.put("commentId",comment.getId());
+        JSONObject jsonObject=commentService.addComment(comment);
         return jsonObject.toString();
     }
 

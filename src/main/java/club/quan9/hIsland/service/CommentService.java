@@ -10,7 +10,7 @@ import java.util.List;
 public interface CommentService
 {
     public List<Comment> getCommentsByTopicId(String topicId);
-    public void addComment(Comment comment);
+    public JSONObject addComment(Comment comment);
     public Comment initComment(Topic topic, User user,String content);
     public JSONObject delComment(User user,Comment comment);
     public Comment getCommentById(String id);

@@ -63,6 +63,20 @@
 
         <h1>-----------------------------------</h1>
 
+        <h3>这是测试登录功能</h3>
+        <p>请求url：http://127.0.0.1:8080/login
+            请求方式：post</p>
+        <div v-for="(value,key) in loginObj" style="padding: 5px">
+            {{key}}:  <input v-model="loginObj[key]">
+        </div>
+        <div v-if="loginFlag!=null">
+            <div v-if="loginFlag.flag==true">登录成功</div>
+            <div v-else>登录失败，请检查用户名密码</div>
+        </div>
+        <button @click="login">登录</button>
+
+        <h1>-----------------------------------</h1>
+
         <h3>这是测试User的Id查重功能</h3>
         <p>请求url：http://127.0.0.1:8080/checkUserId
             请求方式：post</p>
@@ -82,6 +96,14 @@
         <div v-for="(value,key) in topicForAdd" style="padding: 5px">
             {{key}}：   <input v-model="topicForAdd[key]">
         </div>
+        <div v-if="topicAddFlag!=null">
+            <div v-if="topicAddFlag.flag==true">
+                主题发布成功，主题ID为：{{topicAddFlag.topicId}}
+            </div>
+            <div v-else>
+                主题发布失败！  {{topicAddFlag.reason}}
+            </div>
+        </div>
         <button @click="addTopic">发主题</button>
 
         <h1>-----------------------------------</h1>
@@ -91,6 +113,12 @@
             请求方式：POST</p>
         <div v-for="(value,key) in commentForAdd" style="padding: 5px">
             {{key}}:  <input v-model="commentForAdd[key]">
+        </div>
+        <div v-if="commentAddFlag!=null">
+            <div v-if="commentAddFlag.flag==true">
+                评论发布成功，评论ID为  {{commentAddFlag.commentId}}
+            </div>
+
         </div>
         <button @click="addComment">点击评论</button>
 
@@ -172,6 +200,12 @@
                     states:''
                 },
 
+                loginObj:{
+                    id:"",
+                    passwd:""
+                },
+                loginFlag:null,
+
                 userId:{userId:''},
                 checkUserIdFlag:null,
 
@@ -180,11 +214,15 @@
                     title:'',
                     content:''
                 },
+                topicAddFlag:null,
+
+
                 commentForAdd:{
                     authorId:null,
                     topicId:null,
                     content:null
                 },
+                commentAddFlag:null,
 
                 delCommentObj:{
                     userId:"",
@@ -262,6 +300,18 @@
                     recive=JSON.parse(xhr.response);
                     console.log("用户注册-接受数据：",recive);
                 },
+                login:function(){
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/login";
+                    xhr.open("post",url,false);
+                    xhr.setRequestHeader("content-type","application/json");
+                    var text=JSON.stringify(this.loginObj);
+                    xhr.send(text);
+                    console.log("登录-发送数据：",text);
+                    recive=JSON.parse(xhr.response);
+                    console.log("登录-接受数据：",recive);
+                    this.loginFlag=recive;
+                },
                 checkUserId:function() {
                     var xhr=new XMLHttpRequest();
                     var url="http://127.0.0.1:8080/checkUserId";
@@ -284,6 +334,7 @@
                     console.log("发帖-发送数据：",text);
                     recive=JSON.parse(xhr.response);
                     console.log("发帖-接受数据：",recive);
+                    this.topicAddFlag=recive;
                 },
                 addComment:function () {
                     var xhr=new XMLHttpRequest();
@@ -295,6 +346,7 @@
                     console.log("评论-发送数据：",text);
                     recive=JSON.parse(xhr.response);
                     console.log("评论-接受数据：",recive);
+                    this.commentAddFlag=recive;
                 },
                 delComment:function () {
                     var xhr=new XMLHttpRequest();

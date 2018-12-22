@@ -26,9 +26,13 @@ public class CommentServiceImpl implements CommentService
     }
 
     @Override
-    public void addComment(Comment comment)
+    public JSONObject addComment(Comment comment)
     {
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("flag",true);
         commentRepository.addComment(comment);
+        jsonObject.put("commentId",comment.getId());
+        return jsonObject;
     }
 
     @Override
