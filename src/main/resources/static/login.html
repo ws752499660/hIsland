@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link href="https://cdn.bootcss.com/element-ui/2.4.11/theme-chalk/index.css" rel="stylesheet">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div id="app">
+    <el-button @click="visible = true">我是用户</el-button>
+    <el-dialog :visible.sync="visible" title="Hello world">
+      <p>Try Element</p>
+      <el-input v-model="input" placeholder="请输入用户ID"></el-input>
+      <el-input v-model="input" placeholder="请输入用户密码"></el-input>
+      <el-button onclick="window.location.href='./index.html'">登录</el-button>
+
+    </el-dialog>
+    <el-button onclick="window.location.href='./index.html'">我是游客</el-button>
+  </div>
+</body>
+<script src="https://cdn.bootcss.com/vue/2.5.21/vue.js"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.4.11/index.js"></script>
+<script src="login.js"></script>
+<script src="main.js"></script>
+</html>

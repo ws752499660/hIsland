@@ -32,6 +32,12 @@ public class IndexController
         return "index.html";
     }
 
+    @RequestMapping(value = {"/test"},method =RequestMethod.GET)
+    public String test()
+    {
+        return "test.html";
+    }
+
     @RequestMapping(value = "/getTopicList",method = RequestMethod.GET)
     @ResponseBody
     public List<Topic> getAllTopic()
