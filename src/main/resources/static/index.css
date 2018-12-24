@@ -1,32 +1,27 @@
-.transition-box {
-    margin-bottom: 10px;
-    width: 200px;
-    height: 100px;
-    border-radius: 4px;
-    background-color: #409EFF;
-    text-align: center;
-    color: #fff;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    margin-right: 20px;
+
+body{
+  background-color: 	
+  #F0F8FF;
 }
 .el-header {
-    background-color: #B3C0D1;
+    background-color: #AFEEEE;
     color: #333;
     line-height: 60px;
+    margin-left: auto;
+   margin-right: auto;
+   width: 720px;
 }
   
-.el-aside {
-  color: #333;
-}
 
 .el-collapse-item{
+  background-color:#F0F8FF;
   margin-left: auto;
   margin-right: auto;
   margin-top: 40px;
   width: 600px;
 }
 .el-collapse{
+  background-color:#F0F8FF;
   margin-left: auto;
   margin-right: auto;
   margin-top: 50px;
@@ -50,11 +45,26 @@
 }
 
 .box-card {
+  margin-left: auto;
+   margin-right: auto;
   width: 480px;
+  background-color:	
+  #E0FFFF;
 }
 
 .box-card-1 {
+  margin-left: auto;
+   margin-right: auto;
   height: 60px;
   width: 480px;
+  background-color:#F0FFFF;
 
+}
+
+.box-card-2 {
+  margin-left: auto;
+   margin-right: auto;
+  height: 60px;
+  width: 480px;
+  background-color:#F0F8FF;
 }

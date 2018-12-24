@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>H岛测试游乐场</title>
+    <style>
+        body{
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>这里是H岛开发游乐场</h1>
+    <h2>这里用来测试各种API接口DA☆ZE</h2>
+    <h2>各种json格式请自行在控制台的相关log中自行查阅</h2>
+    <h1>-----------------------------------</h1>
+    <div id="app">
+        <h3>用户ID api测试</h3>
+        <p>请求url：http://127.0.0.1:8080/getName
+            请求方式：post</p>
+        请输入用户ID：
+        <input v-model="id">
+        <p>此ID用户的姓名是: {{ name }}</p>
+        <button @click="getUserName">点击</button>
+
+        <h1>-----------------------------------</h1>
+
+        <h3>测试topicList获取：</h3>
+        <p>请求url:http://127.0.0.1:8080/getTopicList
+            请求方式：get</p>
+        <button @click="getTopic">获取topic列表</button>
+        <p v-for="topic in topicList">
+            {{topic.title}}(Topic id:{{topic.id}})——{{topic.date}}
+            <br>
+            {{topic.content}}—— by {{topic.authorName}}({{topic.authorId}})
+            <br>
+        </p>
+
+        <h1>-----------------------------------</h1>
+
+        <h3>测试给出topicId获取评论列表功能：</h3>
+        <p>请求url：http://127.0.0.1:8080/getCommentByTopicId
+            请求方式：post</p>
+        <p>请输入topicId： </p>
+        <input v-model="topicId">
+        <button @click="getCommentList">获取该Topic Id下的评论</button>
+        <p v-for="comment in commentList">
+            评论ID： {{comment.id}}
+            <br>
+            {{comment.content}}——{{comment.authorName}}
+            <br>
+        </p>
+
+        <h1>-----------------------------------</h1>
+
+        <h3>这是测试User的注册功能</h3>
+        <p>请求url：http://127.0.0.1:8080/userRegister
+            请求方式：post</p>
+        <div v-for="(value,key) in user" style="padding: 5px">
+            {{key}}:  <input v-model="user[key]">
+        </div>
+        <button @click="register">注册</button>
+
+        <h1>-----------------------------------</h1>
+
+        <h3>这是测试User的Id查重功能</h3>
+        <p>请求url：http://127.0.0.1:8080/checkUserId
+            请求方式：post</p>
+        请输入想注册的UserId:
+        <input v-model="userId.userId" style="padding: 5px">
+        <div v-if="checkUserIdFlag!=null">
+            <div v-if="checkUserIdFlag.flag">恭喜，该Id可用</div>
+            <div v-else>再重新想一个吧，有人已经注册过该Id了</div>
+        </div>
+        <button @click="checkUserId">点击查重</button>
+
+        <h1>-----------------------------------</h1>
+
+        <h3>测试发主题功能</h3>
+        <p>请求url：http://127.0.0.1:8080/addTopic
+            请求方式：POST</p>
+        <div v-for="(value,key) in topicForAdd" style="padding: 5px">
+            {{key}}：   <input v-model="topicForAdd[key]">
+        </div>
+        <button @click="addTopic">发主题</button>
+
+        <h1>-----------------------------------</h1>
+
+        <h3>测试评论功能</h3>
+        <p>请求url：http://127.0.0.1:8080/addComment
+            请求方式：POST</p>
+        <div v-for="(value,key) in commentForAdd" style="padding: 5px">
+            {{key}}:  <input v-model="commentForAdd[key]">
+        </div>
+        <button @click="addComment">点击评论</button>
+
+        <h1>-----------------------------------</h1>
+
+        <h3>测试删除评论功能</h3>
+        <p>请求url：http://127.0.0.1:8080/delComment
+            请求方式：POST</p>
+        <div v-for="(value,key) in delCommentObj" style="padding: 5px">
+            {{key}}:  <input v-model="delCommentObj[key]">
+        </div>
+        <div v-if="delCommentFlag!=null">
+            <div v-if="delCommentFlag.flag">删评论成功</div>
+            <div v-else>
+                删评论失败<br>
+                原因:  {{delCommentFlag.reason}}
+            </div>
+        </div>
+        <br>
+        <button @click="delComment">点击删除评论</button>
+
+        <h1>-----------------------------------</h1>
+
+        <h3>测试删除主题功能</h3>
+        <p>请求url：http://127.0.0.1:8080/delTopic
+            请求方式：POST</p>
+        <div v-for="(value,key) in delTopicObj" style="padding: 5px">
+            {{key}}:  <input v-model="delTopicObj[key]">
+        </div>
+        <div v-if="delTopicFlag!=null">
+            <div v-if="delTopicFlag.flag">删主题成功</div>
+            <div v-else>
+                删主题失败<br>
+                原因:  {{delTopicFlag.reason}}
+            </div>
+        </div>
+        <br>
+        <button @click="delTopic">点击删除主题</button>
+
+        <h1>-----------------------------------</h1>
+
+        <h3>测试封禁功能</h3>
+        <p>请求url：http://127.0.0.1:8080/banUser
+            请求方式：POST</p>
+        <div v-for="(value,key) in banUserObj" style="padding: 5px">
+            {{key}}:  <input v-model="banUserObj[key]">
+        </div>
+        <div v-if="banUserFlag!=null">
+            <div v-if="banUserFlag.flag">封禁成功</div>
+            <div v-else>
+                封禁失败
+                <br>
+                {{banUserFlag.reason}}
+            </div>
+        </div>
+        <button @click="banUser">点击封禁</button>
+
+
+    </div>
+
+    <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+    <script>
+        var app=new Vue({
+            el:'#app',
+
+            data:{
+                id:'',
+                name:'',
+                topicList:null,
+                topicId:null,
+                commentList:null,
+                user:{
+                    id:'',
+                    name:'',
+                    sex:'',
+                    hobby:'',
+                    phone:'',
+                    group:'',
+                    states:''
+                },
+
+                userId:{userId:''},
+                checkUserIdFlag:null,
+
+                topicForAdd:{
+                    authorId:'',
+                    title:'',
+                    content:''
+                },
+                commentForAdd:{
+                    authorId:null,
+                    topicId:null,
+                    content:null
+                },
+
+                delCommentObj:{
+                    userId:"",
+                    commentId:""
+                },
+                delCommentFlag:null,
+
+                delTopicObj:{
+                    userId:"",
+                    topicId:""
+                },
+                delTopicFlag:null,
+
+                banUserObj:{
+                    optUserId:'',
+                    tarUserId:''
+                },
+                banUserFlag:null
+            },
+
+            methods:{
+                getUserName:function(){
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/getName";
+                    xhr.open("post",url,false);
+                    xhr.setRequestHeader("content-type","application/json");
+                    var text={
+                        id:this.id
+                    };
+                    text=JSON.stringify(text);
+                    xhr.send(text);
+                    console.log("获取用户姓名-发送数据：",text);
+                    recive=JSON.parse(xhr.response);
+                    console.log("获取用户姓名-接受数据：",recive);
+                    this.name=recive.name;
+                },
+                getTopic:function () {
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/getTopicList";
+                    xhr.open("get",url,false);
+                    xhr.send();
+                    console.log("获取topic列表-发送数据：","不需要发送数据，只请求get一下就好");
+                    recive=JSON.parse(xhr.response);
+                    console.log("获取topic列表-接受数据：",recive);
+                    recive.forEach(function (e) {
+                        e.date=new Date(e.date);
+                        e.date=e.date.getFullYear()+"-"+e.date.getMonth()+"-"+e.date.getDate()+"  "+e.date.getHours()+":"+e.date.getMinutes();
+                        console.log("获取topic列表-这里对date进行格式化为Date类型后再次格式化为我们想要的格式",e.date);
+                    })
+                    this.topicList=recive;
+                },
+                getCommentList:function () {
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/getCommentByTopicId";
+                    xhr.open("post",url,false);
+                    xhr.setRequestHeader("content-type","application/json");
+                    var text={
+                        topicId:this.topicId
+                    };
+                    text=JSON.stringify(text);
+                    xhr.send(text);
+                    console.log("通过topicId获取评论列表-发送数据：",text);
+                    recive=JSON.parse(xhr.response);
+                    console.log("通过topicId获取评论列表-接受数据：",recive);
+                    this.commentList=recive;
+                },
+                register:function () {
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/userRegister";
+                    xhr.open("post",url,false);
+                    xhr.setRequestHeader("content-type","application/json");
+                    var text=JSON.stringify(this.user);
+                    xhr.send(text);
+                    console.log("用户注册-发送数据：",text);
+                    recive=JSON.parse(xhr.response);
+                    console.log("用户注册-接受数据：",recive);
+                },
+                checkUserId:function() {
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/checkUserId";
+                    xhr.open("post",url,false);
+                    xhr.setRequestHeader("content-type","application/json");
+                    var text=JSON.stringify(this.userId);
+                    xhr.send(text);
+                    console.log("用户ID查重-发送数据：",text);
+                    recive=JSON.parse(xhr.response);
+                    console.log("用户ID查重-接受数据：",recive);
+                    this.checkUserIdFlag=recive;
+                },
+                addTopic:function () {
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/addTopic";
+                    xhr.open("post",url,false);
+                    xhr.setRequestHeader("content-type","application/json");
+                    var text=JSON.stringify(this.topicForAdd);
+                    xhr.send(text);
+                    console.log("发帖-发送数据：",text);
+                    recive=JSON.parse(xhr.response);
+                    console.log("发帖-接受数据：",recive);
+                },
+                addComment:function () {
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/addComment";
+                    xhr.open("post",url,false);
+                    xhr.setRequestHeader("content-type","application/json");
+                    var text=JSON.stringify(this.commentForAdd);
+                    xhr.send(text);
+                    console.log("评论-发送数据：",text);
+                    recive=JSON.parse(xhr.response);
+                    console.log("评论-接受数据：",recive);
+                },
+                delComment:function () {
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/delComment";
+                    xhr.open("post",url,false);
+                    xhr.setRequestHeader("content-type","application/json");
+                    var text=JSON.stringify(this.delCommentObj);
+                    xhr.send(text);
+                    console.log("删评论-发送数据：",text);
+                    recive=JSON.parse(xhr.response);
+                    console.log("删评论-接受数据：",recive);
+                    this.delCommentFlag=recive;
+                },
+                delTopic:function () {
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/delTopic";
+                    xhr.open("post",url,false);
+                    xhr.setRequestHeader("content-type","application/json");
+                    var text=JSON.stringify(this.delTopicObj);
+                    xhr.send(text);
+                    console.log("删主题-发送数据：",text);
+                    recive=JSON.parse(xhr.response);
+                    console.log("删主题-接受数据：",recive);
+                    this.delTopicFlag=recive;
+                },
+                banUser:function () {
+                    var xhr=new XMLHttpRequest();
+                    var url="http://127.0.0.1:8080/banUser";
+                    xhr.open("post",url,false);
+                    xhr.setRequestHeader("content-type","application/json");
+                    var text=JSON.stringify(this.banUserObj);
+                    xhr.send(text);
+                    console.log("封禁用户-发送数据：",text);
+                    recive=JSON.parse(xhr.response);
+                    console.log("封禁用户-接受数据：",recive);
+                    this.banUserFlag=recive;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
