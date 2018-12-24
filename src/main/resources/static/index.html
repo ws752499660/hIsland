@@ -16,21 +16,22 @@
             <el-dialog title="注册" :visible.sync="registerVisible">
               <el-input placeholder="登录账号" v-model="user.id"></el-input>
               <el-input placeholder="姓名" v-model="user.name"></el-input>
-              <el-input placeholder="性别F或者M" v-model="user.sex"></el-input>
+              <el-select placeholder="性别" v-model="user.sex" style="width: 612px">
+                <el-option label="男" value="m"></el-option>
+                <el-option label="女" value="f"></el-option>
+              </el-select>
               <el-input placeholder="兴趣爱好" v-model="user.hobby"></el-input>
               <el-input placeholder="手机号码" v-model="user.phone"></el-input>
-              <el-input placeholder="group" v-model="user.group"></el-input>
-              <el-input placeholder="states" v-model="user.states"></el-input>
               <el-button @click="register">注册</el-button>
             </el-dialog>
 
           <el-button  @click="loginVisible=true">登录</el-button>
             <el-dialog title="登录" :visible.sync="loginVisible">
                 <el-input placeholder="输入账号" v-model="loginObj.id"></el-input>
-                <el-input placeholder="输入密码" v-model="loginObj.passwd"></el-input>
+                <el-input placeholder="输入密码" v-model="loginObj.passwd" type="password"></el-input>
                 <div v-if="loginFlag!=null">
                     <div v-if="loginFlag.flag==true">登录成功</div>
-                    <div v-else>登录失败，请检查用户名密码</div>
+                    <div v-else>未登录或请检查用户名密码</div>
                 </div>
               <el-button @click="login">登录</el-button>
             </el-dialog>
@@ -50,14 +51,13 @@
                   主题发布失败！  {{topicAddFlag.reason}}
               </div>
               </div>
-              <el-button @click="addTopic">发帖</el-button>
+              <el-button @click="addTopicClk">发帖</el-button>
           </el-dialog>
 
           <template v-if="loginStatus.id=='admin'">
               <el-button @click="banUserVisible=true">封禁</el-button>
               <el-dialog title="封禁用户" :visible.sync="banUserVisible">
-                <el-input placeholder="封禁用户ID" v-model="banUserObj.optUserId"></el-input>
-                <el-input placeholder="管理员ID" v-model="banUserObj.tarUserId"></el-input>
+                <el-input placeholder="封禁用户ID" v-model="banUserObj.tarUserId"></el-input>
               <el-button @click="banUser">点击封禁</el-button>
             </el-dialog>
           </template>
@@ -66,37 +66,39 @@
       </el-header>
 
           <el-container>
-              <el-collapse v-model="activeNames"  @change="handleChange">
+              <el-collapse v-model="activeNames" accordion @change="handleChange">
                     <el-collapse-item style="color:#FFFAF0" v-for="(value,key) in topicList" :title="topicList[key].title"  :name="key">
                         <el-card class="box-card">
                           <div slot="header" class="clearfix">
-                            <span>发帖人：{{topicList[key].authorName}}(Topic id:{{topicList[key].id}})——{{topicList[key].date}}</span>                              
+                            <span>发帖人：{{topicList[key].authorName}}
+                              <br>
+                              发帖时间:{{topicList[key].date}}</span>                              
                           </div>
                           <div>{{topicList[key].content}}</div>
                           <div v-if="loginStatus.id=='admin'">
-                            <el-button style="float: right; padding: 3px 0" type="text" @click="delTopic">删除</el-button>
+                            <el-button style="float: right; padding: 3px 0" type="text" @click="delTopicClk">删除</el-button>
                           </div>
                         </el-card>
                         
-                        <el-card class="box-card-1">评论列表
-                            <el-button style="float: right; padding: 3px 0" type="text" v-if="loginFlag.flag==true" @click="addCommentVisible=true">发布评论</el-button>
+                        <el-card class="box-card-1"><div style="font-size:15px; font-weight:bold">评论列表</div>
+                            <el-button style="float: right; padding: 3px 0 0 0" type="text" v-if="loginFlag.flag==true" @click="addCommentVisible=true">发布评论</el-button>
                             <el-dialog title="评论" :visible.sync="addCommentVisible">
-                            <div v-for="(value,key) in commentReceive" style="padding: 5px">
-                                {{key}}:  <input v-model="commentReceive[key]">
+                            <div style="padding: 5px">
+                                评论内容:  <br>
+                                <input v-model="commentForAdd.content">
                             </div>
                             <div v-if="commentAddFlag!=null">
                                 <div v-if="commentAddFlag.flag==true">
                                     评论发布成功，评论ID为  {{commentAddFlag.commentId}}
                                 </div>
                             </div>
-                            <el-button @click="addComment">点击评论</el-button>
+                            <el-button @click="addCommentClk">点击评论</el-button>
                             </el-dialog>
                         </el-card>
-                        <el-card v-model="topicId" class="box-card-2">
-                            <p v-for="comment in getCommentObjList[key].commentList" >
+                        <el-card v-model="topicId" class="box-card-2" v-for="(comment,index) in getCommentObjList[key].commentList">
                               {{comment.content}}——{{comment.authorName}}
-                              <el-button style="float: right; padding: 3px 0" type="text" v-if="loginStatus.id=='admin'" @click="delComment">删除</el-button>
-                            </p>
+                              <el-button style="float: right; padding: 3px 0" type="text" v-if="loginStatus.id=='admin'" 
+                                @click="delCommentClk(comment.id,key,index)">删除</el-button>
                         </el-card>
 
                     </el-collapse-item>
@@ -115,4 +117,3 @@
 
 </body>
 </html>
-
