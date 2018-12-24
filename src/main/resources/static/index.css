@@ -1,0 +1,70 @@
+
+.el-container{
+  background-color: 	
+  #F0F8FF;
+}
+.el-header {
+    background-color: #AFEEEE;
+    color: #333;
+    line-height: 60px;
+    margin-left: auto;
+   margin-right: auto;
+   width: 720px;
+}
+  
+
+.el-collapse-item{
+  background-color:#F0F8FF;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+  width: 600px;
+}
+.el-collapse{
+  background-color:#F0F8FF;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  width: 600px;
+}
+.text {
+  font-size: 14px;
+}
+
+.item {
+  margin-bottom: 18px;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both
+}
+
+.box-card {
+  margin-left: auto;
+   margin-right: auto;
+  width: 480px;
+  background-color:	
+  #E0FFFF;
+}
+
+.box-card-1 {
+  margin-left: auto;
+   margin-right: auto;
+  height: 60px;
+  width: 480px;
+  background-color:#F0FFFF;
+
+}
+
+.box-card-2 {
+  margin-left: auto;
+   margin-right: auto;
+  height: 60px;
+  width: 480px;
+  background-color:#F0F8FF;
+}
