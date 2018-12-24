@@ -34,6 +34,7 @@ new Vue({
 
       user:{
           id:'',
+          passwd:'',
           name:'',
           sex:'',
           hobby:'',
@@ -179,6 +180,7 @@ new Vue({
             console.log("用户注册-发送数据：",text);
             recive=JSON.parse(xhr.response);
             console.log("用户注册-接受数据：",recive);
+            this.registerVisible=false;
         },
         login:function(){
 

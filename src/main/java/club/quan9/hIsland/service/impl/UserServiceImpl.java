@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService
         if(checkUserId(id))
         {
             user.setId(id);
+            user.setPasswd(receive.getString("passwd"));
             user.setName(receive.getString("name"));
             user.setSex(receive.getString("sex").toCharArray()[0]);
             user.setHobby(receive.getString("hobby"));
