@@ -105,7 +105,7 @@ new Vue({
 
         getTopicList:function(){
             var xhr=new XMLHttpRequest();
-            var url="http://127.0.0.1:8080/getTopicList";
+            var url="http://dev.quan9.eu.org/getTopicList";
             xhr.open("get",url,false);
             xhr.send();
             console.log("获取topic列表-发送数据：","不需要发送数据，只请求get一下就好");
@@ -155,7 +155,7 @@ new Vue({
         },
         getCommentList:function (topicId) {
             var xhr=new XMLHttpRequest();
-            var url="http://127.0.0.1:8080/getCommentByTopicId";
+            var url="http://dev.quan9.eu.org/getCommentByTopicId";
             xhr.open("post",url,false);
             xhr.setRequestHeader("content-type","application/json");
             var text={
@@ -170,7 +170,7 @@ new Vue({
         },
         register:function () {
             var xhr=new XMLHttpRequest();
-            var url="http://127.0.0.1:8080/userRegister";
+            var url="http://dev.quan9.eu.org/userRegister";
             xhr.open("post",url,false);
             xhr.setRequestHeader("content-type","application/json");
             this.user.group="N";
@@ -185,7 +185,7 @@ new Vue({
         login:function(){
 
             var xhr=new XMLHttpRequest();
-            var url="http://127.0.0.1:8080/login";
+            var url="http://dev.quan9.eu.org/login";
             xhr.open("post",url,false);
             xhr.setRequestHeader("content-type","application/json");
             var text=JSON.stringify(this.loginObj);
@@ -205,7 +205,7 @@ new Vue({
         },
         getUserName:function(){
             var xhr=new XMLHttpRequest();
-            var url="http://127.0.0.1:8080/getName";
+            var url="http://dev.quan9.eu.org/getName";
             xhr.open("post",url,false);
             xhr.setRequestHeader("content-type","application/json");
             var text={
@@ -229,7 +229,7 @@ new Vue({
         addTopic:function () {
             
             var xhr=new XMLHttpRequest();
-            var url="http://127.0.0.1:8080/addTopic";
+            var url="http://dev.quan9.eu.org/addTopic";
             xhr.open("post",url,false);
             xhr.setRequestHeader("content-type","application/json");
 
@@ -276,7 +276,7 @@ new Vue({
         addComment:function () {
          
             var xhr=new XMLHttpRequest();
-            var url="http://127.0.0.1:8080/addComment";
+            var url="http://dev.quan9.eu.org/addComment";
             xhr.open("post",url,false);
             xhr.setRequestHeader("content-type","application/json");
 
@@ -304,7 +304,7 @@ new Vue({
         /*需要增加topicID*/
         delTopic:function () {
             var xhr=new XMLHttpRequest();
-            var url="http://127.0.0.1:8080/delTopic";
+            var url="http://dev.quan9.eu.org/delTopic";
             xhr.open("post",url,false);
             xhr.setRequestHeader("content-type","application/json");
 
@@ -332,7 +332,7 @@ new Vue({
 
         delComment:function () {
             var xhr=new XMLHttpRequest();
-            var url="http://127.0.0.1:8080/delComment";
+            var url="http://dev.quan9.eu.org/delComment";
             xhr.open("post",url,false);
             xhr.setRequestHeader("content-type","application/json");
             var text=JSON.stringify(this.delCommentObj);
@@ -346,7 +346,7 @@ new Vue({
         banUser:function () {
             this.banUserObj.optUserId=this.loginStatus.id;
             var xhr=new XMLHttpRequest();
-            var url="http://127.0.0.1:8080/banUser";
+            var url="http://dev.quan9.eu.org/banUser";
             xhr.open("post",url,false);
             xhr.setRequestHeader("content-type","application/json");
             var text=JSON.stringify(this.banUserObj);
