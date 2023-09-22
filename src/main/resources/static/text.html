@@ -16,7 +16,7 @@
     <h1>-----------------------------------</h1>
     <div id="app">
         <h3>用户ID api测试</h3>
-        <p>请求url：http://127.0.0.1:8080/getName
+        <p>请求url：http://dev.quan9.eu.org/getName
             请求方式：post</p>
         请输入用户ID：
         <input v-model="id">
@@ -26,7 +26,7 @@
         <h1>-----------------------------------</h1>
 
         <h3>测试topicList获取：</h3>
-        <p>请求url:http://127.0.0.1:8080/getTopicList
+        <p>请求url:http://dev.quan9.eu.org/getTopicList
             请求方式：get</p>
         <button @click="getTopic">获取topic列表</button>
         <p v-for="topic in topicList">
@@ -39,7 +39,7 @@
         <h1>-----------------------------------</h1>
 
         <h3>测试给出topicId获取评论列表功能：</h3>
-        <p>请求url：http://127.0.0.1:8080/getCommentByTopicId
+        <p>请求url：http://dev.quan9.eu.org/getCommentByTopicId
             请求方式：post</p>
         <p>请输入topicId： </p>
         <input v-model="topicId">
@@ -54,7 +54,7 @@
         <h1>-----------------------------------</h1>
 
         <h3>这是测试User的注册功能</h3>
-        <p>请求url：http://127.0.0.1:8080/userRegister
+        <p>请求url：http://dev.quan9.eu.org/userRegister
             请求方式：post</p>
         <div v-for="(value,key) in user" style="padding: 5px">
             {{key}}:  <input v-model="user[key]">
@@ -64,7 +64,7 @@
         <h1>-----------------------------------</h1>
 
         <h3>这是测试User的Id查重功能</h3>
-        <p>请求url：http://127.0.0.1:8080/checkUserId
+        <p>请求url：http://dev.quan9.eu.org/checkUserId
             请求方式：post</p>
         请输入想注册的UserId:
         <input v-model="userId.userId" style="padding: 5px">
@@ -77,7 +77,7 @@
         <h1>-----------------------------------</h1>
 
         <h3>测试发主题功能</h3>
-        <p>请求url：http://127.0.0.1:8080/addTopic
+        <p>请求url：http://dev.quan9.eu.org/addTopic
             请求方式：POST</p>
         <div v-for="(value,key) in topicForAdd" style="padding: 5px">
             {{key}}：   <input v-model="topicForAdd[key]">
@@ -87,7 +87,7 @@
         <h1>-----------------------------------</h1>
 
         <h3>测试评论功能</h3>
-        <p>请求url：http://127.0.0.1:8080/addComment
+        <p>请求url：http://dev.quan9.eu.org/addComment
             请求方式：POST</p>
         <div v-for="(value,key) in commentForAdd" style="padding: 5px">
             {{key}}:  <input v-model="commentForAdd[key]">
@@ -97,7 +97,7 @@
         <h1>-----------------------------------</h1>
 
         <h3>测试删除评论功能</h3>
-        <p>请求url：http://127.0.0.1:8080/delComment
+        <p>请求url：http://dev.quan9.eu.org/delComment
             请求方式：POST</p>
         <div v-for="(value,key) in delCommentObj" style="padding: 5px">
             {{key}}:  <input v-model="delCommentObj[key]">
@@ -115,7 +115,7 @@
         <h1>-----------------------------------</h1>
 
         <h3>测试删除主题功能</h3>
-        <p>请求url：http://127.0.0.1:8080/delTopic
+        <p>请求url：http://dev.quan9.eu.org/delTopic
             请求方式：POST</p>
         <div v-for="(value,key) in delTopicObj" style="padding: 5px">
             {{key}}:  <input v-model="delTopicObj[key]">
@@ -133,7 +133,7 @@
         <h1>-----------------------------------</h1>
 
         <h3>测试封禁功能</h3>
-        <p>请求url：http://127.0.0.1:8080/banUser
+        <p>请求url：http://dev.quan9.eu.org/banUser
             请求方式：POST</p>
         <div v-for="(value,key) in banUserObj" style="padding: 5px">
             {{key}}:  <input v-model="banUserObj[key]">
@@ -208,7 +208,7 @@
             methods:{
                 getUserName:function(){
                     var xhr=new XMLHttpRequest();
-                    var url="http://127.0.0.1:8080/getName";
+                    var url="http://dev.quan9.eu.org/getName";
                     xhr.open("post",url,false);
                     xhr.setRequestHeader("content-type","application/json");
                     var text={
@@ -223,7 +223,7 @@
                 },
                 getTopic:function () {
                     var xhr=new XMLHttpRequest();
-                    var url="http://127.0.0.1:8080/getTopicList";
+                    var url="http://dev.quan9.eu.org/getTopicList";
                     xhr.open("get",url,false);
                     xhr.send();
                     console.log("获取topic列表-发送数据：","不需要发送数据，只请求get一下就好");
@@ -238,7 +238,7 @@
                 },
                 getCommentList:function () {
                     var xhr=new XMLHttpRequest();
-                    var url="http://127.0.0.1:8080/getCommentByTopicId";
+                    var url="http://dev.quan9.eu.org/getCommentByTopicId";
                     xhr.open("post",url,false);
                     xhr.setRequestHeader("content-type","application/json");
                     var text={
@@ -253,7 +253,7 @@
                 },
                 register:function () {
                     var xhr=new XMLHttpRequest();
-                    var url="http://127.0.0.1:8080/userRegister";
+                    var url="http://dev.quan9.eu.org/userRegister";
                     xhr.open("post",url,false);
                     xhr.setRequestHeader("content-type","application/json");
                     var text=JSON.stringify(this.user);
@@ -264,7 +264,7 @@
                 },
                 checkUserId:function() {
                     var xhr=new XMLHttpRequest();
-                    var url="http://127.0.0.1:8080/checkUserId";
+                    var url="http://dev.quan9.eu.org/checkUserId";
                     xhr.open("post",url,false);
                     xhr.setRequestHeader("content-type","application/json");
                     var text=JSON.stringify(this.userId);
@@ -276,7 +276,7 @@
                 },
                 addTopic:function () {
                     var xhr=new XMLHttpRequest();
-                    var url="http://127.0.0.1:8080/addTopic";
+                    var url="http://dev.quan9.eu.org/addTopic";
                     xhr.open("post",url,false);
                     xhr.setRequestHeader("content-type","application/json");
                     var text=JSON.stringify(this.topicForAdd);
@@ -287,7 +287,7 @@
                 },
                 addComment:function () {
                     var xhr=new XMLHttpRequest();
-                    var url="http://127.0.0.1:8080/addComment";
+                    var url="http://dev.quan9.eu.org/addComment";
                     xhr.open("post",url,false);
                     xhr.setRequestHeader("content-type","application/json");
                     var text=JSON.stringify(this.commentForAdd);
@@ -298,7 +298,7 @@
                 },
                 delComment:function () {
                     var xhr=new XMLHttpRequest();
-                    var url="http://127.0.0.1:8080/delComment";
+                    var url="http://dev.quan9.eu.org/delComment";
                     xhr.open("post",url,false);
                     xhr.setRequestHeader("content-type","application/json");
                     var text=JSON.stringify(this.delCommentObj);
@@ -310,7 +310,7 @@
                 },
                 delTopic:function () {
                     var xhr=new XMLHttpRequest();
-                    var url="http://127.0.0.1:8080/delTopic";
+                    var url="http://dev.quan9.eu.org/delTopic";
                     xhr.open("post",url,false);
                     xhr.setRequestHeader("content-type","application/json");
                     var text=JSON.stringify(this.delTopicObj);
@@ -322,7 +322,7 @@
                 },
                 banUser:function () {
                     var xhr=new XMLHttpRequest();
-                    var url="http://127.0.0.1:8080/banUser";
+                    var url="http://dev.quan9.eu.org/banUser";
                     xhr.open("post",url,false);
                     xhr.setRequestHeader("content-type","application/json");
                     var text=JSON.stringify(this.banUserObj);

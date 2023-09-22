@@ -11,7 +11,7 @@ new Vue({
         },
         register:function () {
             var xhr=new XMLHttpRequest();
-            var url="http://127.0.0.1:8080/userRegister";
+            var url="http://dev.quan9.eu.org/userRegister";
             xhr.open("post",url,false);
             xhr.setRequestHeader("content-type","application/json");
             var text=JSON.stringify(this.user);
